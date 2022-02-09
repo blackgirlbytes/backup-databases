@@ -43,7 +43,7 @@ for database in ${DATABASE_NAMES[@]}; do
     printf "Backing up $database\n"
 
     set echo off
-    mysqldump -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASSWORD" "$database" >"$TMP_DIR/$database.sql"
+    mysql -u admin_rizel -p --database=employees --host=demo-actions-db.cbou4ufhnwpk.us-east-1.rds.amazonaws.com --port=3306 --batch -e "select * from people " | sed 's/\t/","/g;s/^/"/;s/$/"/;s/\n//g' > "$TMP_DIR/$database.sql"
     tar -cpzf "$TMP_DIR/$database-$FILENAME" "$TMP_DIR/$database.sql"
     set echo on
 
